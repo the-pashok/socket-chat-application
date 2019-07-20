@@ -10,7 +10,6 @@ app.get('/', (request, response) => {
     response.sendFile(__dirname + '/index.html');
 });
 
-let users = [];
 let connections = [];
 
 socketio.sockets.on('connection', (socket) => {
@@ -24,11 +23,13 @@ socketio.sockets.on('connection', (socket) => {
         console.log('Disconnected!');
     });
 
-    socket.on('sendMessage', data => {
-        socket.emit('addMessage', ({mess: data.mess, name: data.name}));
+    socket.on('send message', data => {
+        socket.emit('add message', {message: data.message, name: data.name});
     });
 
     socket.emit('getPeopleOnline', connections.length);
 });
 
-server.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 3000, () => {
+    console.log(`Server is running on port 3000 or ${process.env.PORT}`);
+});
